@@ -1,5 +1,7 @@
 package com.example.plabanbiswas_comp304_003_lab_1
 
+import android.content.Context
+import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,14 +18,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat.startActivity
 import java.sql.Timestamp
 
 @Composable
-fun NoteCardData(title: String, content: String, image: Int, timestamp: Timestamp)
+fun NoteCardData(context: Context, id: Int, title: String, content: String, image: Int, timestamp: Timestamp)
 {
     val timestampInMinsResolution =
         timestamp.toString().substring(0, timestamp.toString().length - 7)
@@ -33,8 +34,8 @@ fun NoteCardData(title: String, content: String, image: Int, timestamp: Timestam
                 .padding(10.dp)
                 .fillMaxWidth()
                 .wrapContentHeight(),
-            shape = MaterialTheme.shapes.medium
-
+            shape = MaterialTheme.shapes.medium,
+            onClick = { NavigateToEdit(context = context, id = id, title = title, content = content) }
     ) {
         Row(
                 modifier = Modifier
@@ -69,7 +70,9 @@ fun NoteCardData(title: String, content: String, image: Int, timestamp: Timestam
                         style = MaterialTheme.typography.bodyMedium,
                 )
                 Text(
-                        modifier = Modifier.fillMaxWidth().alpha(0.5f),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .alpha(0.5f),
                         textAlign = TextAlign.Right,
                         text = timestampInMinsResolution,
                         style = MaterialTheme.typography.labelSmall,
@@ -78,3 +81,15 @@ fun NoteCardData(title: String, content: String, image: Int, timestamp: Timestam
         }
     }
 }
+
+fun NavigateToEdit(context: Context, id: Int, title: String, content: String)
+{
+    val intent = Intent(context, EditNoteActivity::class.java).apply {
+        putExtra("n_id", id)
+        putExtra("n_title", title)
+        putExtra("n_content", content)
+    }
+    context.startActivity(intent)
+}
+
+

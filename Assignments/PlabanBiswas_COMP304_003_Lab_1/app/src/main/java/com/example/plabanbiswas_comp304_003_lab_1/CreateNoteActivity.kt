@@ -69,6 +69,7 @@ class CreateNoteActivity : ComponentActivity()
         if (i.hasExtra("h_id"))
         {
             id = intent.getIntExtra("h_id", 0)
+            Log.d("Create - > onStart", "ID: ${id}")
         }
     }
 
@@ -99,9 +100,10 @@ class CreateNoteActivity : ComponentActivity()
     @Composable
     fun Title()
     {
-        var text by remember { mutableStateOf("Enter title of agenda...") }
+        var text by remember { mutableStateOf("") }
 
         OutlinedTextField(
+                placeholder = { Text("Enter title of agenda...") },
                 shape = MaterialTheme.shapes.small,
                 modifier = Modifier.fillMaxWidth(),
                 value = text,
@@ -116,16 +118,16 @@ class CreateNoteActivity : ComponentActivity()
     @Composable
     fun Content()
     {
-        var text by remember { mutableStateOf("Enter agenda here...") }
+        var text by remember { mutableStateOf("") }
 
         OutlinedTextField(
+                placeholder = { Text("Enter agenda here...") },
                 shape = MaterialTheme.shapes.small,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(750.dp),
                 value = text,
-                onValueChange = {
-                    newText ->
+                onValueChange = { newText ->
                     text = newText
                     content = newText
                 },

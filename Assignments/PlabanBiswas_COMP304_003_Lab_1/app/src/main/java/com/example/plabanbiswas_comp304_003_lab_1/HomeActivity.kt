@@ -32,7 +32,10 @@ import java.sql.Timestamp
 
 class HomeActivity : ComponentActivity()
 {
-    var notesList = listOf<Note>()
+    companion object
+    {
+        var notesList = mutableListOf<Note>()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -59,14 +62,25 @@ class HomeActivity : ComponentActivity()
             val createdNote =
                 Note(id = id, title = title.toString(), content = content.toString(), image = 1, timestamp = Timestamp(timestamp))
 
-            notesList = notesList + createdNote
-//            notesList..add(createdNote)
+            notesList.add(createdNote)
         }
         else if (i.hasExtra("edited_title"))
         {
+            val id = intent.getIntExtra("edited_id", 0)
+            val title = intent.getStringExtra("edited_title")
+            val content = intent.getStringExtra("edited_content")
+            val timestamp = intent.getLongExtra("edited_timestamp", System.currentTimeMillis())
 
+            val createdNote =
+                Note(id = id, title = title.toString(), content = content.toString(), image = 1, timestamp = Timestamp(timestamp))
+
+            notesList.removeIf { it.id == id }
+            notesList.add(createdNote)
         }
-
+        else
+        {
+//            val jsonString = Gson().toJson(response.userpatients)
+        }
     }
 
     @Preview
@@ -74,7 +88,7 @@ class HomeActivity : ComponentActivity()
     @Composable
     fun MainScaffoldView()
     {
-        val context = LocalContext.current;
+        val context = LocalContext.current
 
         Scaffold(
                 topBar = {
@@ -90,10 +104,9 @@ class HomeActivity : ComponentActivity()
                 },
                 floatingActionButton = {
                     FloatingActionButton(onClick = {
-                        val intent = Intent(this, HomeActivity::class.java)
+                        val intent = Intent(this, CreateNoteActivity::class.java)
                         intent.putExtra("h_id", notesList.size)
                         startActivity(intent)
-                        context.startActivity(Intent(context, CreateNoteActivity::class.java))
                     }) {
                         Icon(Icons.Default.Add, contentDescription = "Add Note")
                     }
@@ -117,7 +130,7 @@ class HomeActivity : ComponentActivity()
                 contentPadding = PaddingValues(16.dp)
         ) {
             items(notesList) { note ->
-                NoteCardData(note.title, note.content, note.image, note.timestamp)
+                NoteCardData(context = LocalContext.current, note.id, note.title, note.content, note.image, note.timestamp)
             }
         }
     }
@@ -139,7 +152,7 @@ class HomeActivity : ComponentActivity()
 //            listOf(test1, test2, test3, test4, test4, test4, test4, test4, test4, test4, test4, test4, test4, test4, test4, test4)
 
 
-        return notesList
+        return notesList.sortedByDescending { it.timestamp }
     }
 
 }

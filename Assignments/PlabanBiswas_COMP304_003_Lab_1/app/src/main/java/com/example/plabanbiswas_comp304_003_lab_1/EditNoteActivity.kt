@@ -1,6 +1,8 @@
 package com.example.plabanbiswas_comp304_003_lab_1
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -15,6 +17,7 @@ import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -32,18 +35,36 @@ import com.example.plabanbiswas_comp304_003_lab_1.ui.theme.PlabanBiswas_COMP304_
 
 class EditNoteActivity : ComponentActivity()
 {
+    var title = ""
+    var content = ""
+    var id = 0
+
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+//        enableEdgeToEdge()
         setContent {
-            EditNoteSurface()
+            CreateNodeSurface()
+        }
+    }
+
+    override fun onStart()
+    {
+        super.onStart()
+
+        val i = intent
+
+        if (i.hasExtra("n_id"))
+        {
+            id = intent.getIntExtra("n_id", 0)
+            title = intent.getStringExtra("n_title").toString()
+            content = intent.getStringExtra("n_content").toString()
         }
     }
 
     @Preview
     @Composable
-    fun EditNoteSurface()
+    fun CreateNodeSurface()
     {
         Surface(
                 modifier = Modifier.fillMaxSize(),
@@ -58,49 +79,68 @@ class EditNoteActivity : ComponentActivity()
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                EditTitle()
-                EditContent()
-                SaveButtonEdit()
+                Title()
+                Content()
+                SaveButton()
             }
         }
     }
 
     @Composable
-    fun EditTitle()
+    fun Title()
     {
-        var text by remember { mutableStateOf("Enter title of agenda...") }
+        var text by remember { mutableStateOf(title) }
 
-        TextField(
+        OutlinedTextField(
+                placeholder = { Text("Enter title of agenda...") },
                 shape = MaterialTheme.shapes.small,
                 modifier = Modifier.fillMaxWidth(),
                 value = text,
-                onValueChange = { text = it },
+                onValueChange = { newText ->
+                    text = newText
+                    title = newText
+                },
                 label = { Text(style = MaterialTheme.typography.titleLarge, text = "Title") },
         )
     }
 
     @Composable
-    fun EditContent()
+    fun Content()
     {
-        var text by remember { mutableStateOf("Enter agenda here...") }
+        var text by remember { mutableStateOf(content) }
 
-        TextField(
+        OutlinedTextField(
+                placeholder = { Text("Enter agenda here...") },
                 shape = MaterialTheme.shapes.small,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(700.dp),
+                    .height(750.dp),
                 value = text,
-                onValueChange = { text = it },
+                onValueChange = { newText ->
+                    text = newText
+                    content = newText
+                },
                 label = { Text(style = MaterialTheme.typography.titleLarge, text = "Agenda") },
         )
     }
 
     @Composable
-    fun SaveButtonEdit()
+    fun SaveButton()
     {
-        Button( shape = MaterialTheme.shapes.small, modifier = Modifier.fillMaxWidth(), onClick = { }) {
+        Button(shape = MaterialTheme.shapes.small, modifier = Modifier.fillMaxWidth(), onClick = { SaveNote() }) {
             Icon(Icons.Default.CheckCircle, contentDescription = "Save Note")
         }
+    }
+
+    fun SaveNote()
+    {
+        Log.d("SaveNote", "ID: ${id}")
+        val intent = Intent(this, HomeActivity::class.java)
+        intent.putExtra("edited_title", title)
+        intent.putExtra("edited_id", id)
+        intent.putExtra("edited_content", content)
+        intent.putExtra("edited_timestamp", System.currentTimeMillis())
+        startActivity(intent)
     }
 }
 

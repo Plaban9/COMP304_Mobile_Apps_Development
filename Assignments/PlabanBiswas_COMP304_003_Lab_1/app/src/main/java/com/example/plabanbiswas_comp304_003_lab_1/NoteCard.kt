@@ -26,8 +26,10 @@ import java.sql.Timestamp
 @Composable
 fun NoteCardData(context: Context, id: Int, title: String, content: String, image: Int, timestamp: Timestamp)
 {
-    val timestampInMinsResolution =
+    val timestampInMinsResolution = if (timestamp.toString().length > 21)
         timestamp.toString().substring(0, timestamp.toString().length - 7)
+    else
+        timestamp.toString().substring(0, timestamp.toString().length - 5)
 
     ElevatedCard(
             modifier = Modifier

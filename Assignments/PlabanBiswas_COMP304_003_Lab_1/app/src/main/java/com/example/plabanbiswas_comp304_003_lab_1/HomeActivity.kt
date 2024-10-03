@@ -165,6 +165,7 @@ class HomeActivity : ComponentActivity()
         val sharedPreference = getSharedPreferences("NOTES", Context.MODE_PRIVATE)
         var editor = sharedPreference.edit()
         val jsonString = Gson().toJson(notesList)
+        Log.d("SaveToDisk - 1", jsonString)
         editor.putString("notesListJson", jsonString)
         editor.commit()
     }
@@ -177,11 +178,11 @@ class HomeActivity : ComponentActivity()
         if (notesListJsonString != "")
         {
             val gson = Gson()
-//            Log.d("ReadFromDisk - 1", notesListJsonString.toString())
+            Log.d("ReadFromDisk - 1", notesListJsonString.toString())
             notesList = gson.fromJson(notesListJsonString, Array<Note>::class.java).toMutableList()
 
 
-//            Log.d("ReadFromDisk - 2", notesList.toString())
+            Log.d("ReadFromDisk - 2", notesList.toString())
         }
     }
 }

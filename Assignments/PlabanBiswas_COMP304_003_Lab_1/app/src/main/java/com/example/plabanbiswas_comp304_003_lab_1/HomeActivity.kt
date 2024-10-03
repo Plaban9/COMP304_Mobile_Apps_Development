@@ -1,5 +1,6 @@
 package com.example.plabanbiswas_comp304_003_lab_1
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -28,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.google.gson.Gson
 import java.sql.Timestamp
 
 class HomeActivity : ComponentActivity()
@@ -63,6 +65,7 @@ class HomeActivity : ComponentActivity()
                 Note(id = id, title = title.toString(), content = content.toString(), image = 1, timestamp = Timestamp(timestamp))
 
             notesList.add(createdNote)
+            SaveToDisk()
         }
         else if (i.hasExtra("edited_title"))
         {
@@ -76,10 +79,12 @@ class HomeActivity : ComponentActivity()
 
             notesList.removeIf { it.id == id }
             notesList.add(createdNote)
+
+            SaveToDisk()
         }
         else
         {
-//            val jsonString = Gson().toJson(response.userpatients)
+            ReadFromDisk()
         }
     }
 
@@ -155,6 +160,30 @@ class HomeActivity : ComponentActivity()
         return notesList.sortedByDescending { it.timestamp }
     }
 
+    fun SaveToDisk()
+    {
+        val sharedPreference = getSharedPreferences("NOTES", Context.MODE_PRIVATE)
+        var editor = sharedPreference.edit()
+        val jsonString = Gson().toJson(notesList)
+        editor.putString("notesListJson", jsonString)
+        editor.commit()
+    }
+
+    fun ReadFromDisk()
+    {
+        val sharedPreference = getSharedPreferences("NOTES", Context.MODE_PRIVATE)
+        val notesListJsonString = sharedPreference.getString("notesListJson", "")
+
+        if (notesListJsonString != "")
+        {
+            val gson = Gson()
+            Log.d("ReadFromDisk - 1", notesListJsonString.toString())
+            notesList = gson.fromJson(notesListJsonString, Array<Note>::class.java).toMutableList()
+
+
+            Log.d("ReadFromDisk - 2", notesList.toString())
+        }
+    }
 }
 
 

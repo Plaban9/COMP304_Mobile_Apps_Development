@@ -1,5 +1,6 @@
 package com.example.plabanbiswas_comp304_003_lab_1
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -20,6 +21,9 @@ class MainActivity : ComponentActivity()
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            // Navigate to Home Activity at start
+            val homeActivity = Intent(this@MainActivity, HomeActivity::class.java)
+            startActivity(homeActivity)
         }
     }
 }

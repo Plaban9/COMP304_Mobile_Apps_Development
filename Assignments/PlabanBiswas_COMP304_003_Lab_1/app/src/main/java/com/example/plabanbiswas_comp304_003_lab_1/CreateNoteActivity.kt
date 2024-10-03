@@ -9,6 +9,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -125,7 +126,8 @@ class CreateNoteActivity : ComponentActivity()
                 shape = MaterialTheme.shapes.small,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(750.dp),
+                    .fillMaxHeight(0.95f),
+//                    .height(750.dp),
                 value = text,
                 onValueChange = { newText ->
                     text = newText
@@ -142,7 +144,6 @@ class CreateNoteActivity : ComponentActivity()
             Icon(Icons.Default.CheckCircle, contentDescription = "Save Note")
         }
     }
-
 
     fun SaveNote()
     {

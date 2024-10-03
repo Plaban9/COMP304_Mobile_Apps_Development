@@ -177,11 +177,11 @@ class HomeActivity : ComponentActivity()
         if (notesListJsonString != "")
         {
             val gson = Gson()
-            Log.d("ReadFromDisk - 1", notesListJsonString.toString())
+//            Log.d("ReadFromDisk - 1", notesListJsonString.toString())
             notesList = gson.fromJson(notesListJsonString, Array<Note>::class.java).toMutableList()
 
 
-            Log.d("ReadFromDisk - 2", notesList.toString())
+//            Log.d("ReadFromDisk - 2", notesList.toString())
         }
     }
 }

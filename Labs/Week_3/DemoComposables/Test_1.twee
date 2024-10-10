@@ -1,0 +1,44 @@
+:: Start
+Welcome to your adventure! Do you want to go to the forest or the village?
+* [[Forest]]
+* [[Village]]
+
+:: Forest
+You enter the dark forest. Do you want to explore deeper or return to the village?
+* [[Explore deeper|DeepForest]]
+* [[Return to the village|Village]]
+
+:: Village
+You arrive at the village. Do you want to visit the market or the tavern?
+* [[Market]]
+* [[Tavern]]
+
+:: DeepForest
+You find a hidden treasure in the deep forest! Do you want to take it or leave it?
+* [[Take the treasure|Treasure]]
+* [[Leave it|Village]]
+
+:: Market
+You find some interesting items at the market. Do you want to buy something or leave?
+* [[Buy something|Buy]]
+* [[Leave|Tavern]]
+
+:: Tavern
+You meet an old friend at the tavern. Do you want to chat with them or leave?
+* [[Chat|Chat]]
+* [[Leave|End]]
+
+:: Treasure
+Congratulations! You have found a rare artifact. Your adventure ends here.
+* [[The End|End]]
+
+:: Buy
+You buy a mysterious item. Your adventure continues.
+* [[Continue|End]]
+
+:: Chat
+You have a great conversation with your friend. Your adventure continues.
+* [[Continue|End]]
+
+:: End
+Thank you for playing! The end.

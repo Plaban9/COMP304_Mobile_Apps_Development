@@ -165,7 +165,7 @@ class HomeActivity : ComponentActivity()
         val sharedPreference = getSharedPreferences("NOTES", Context.MODE_PRIVATE)
         var editor = sharedPreference.edit()
         val jsonString = Gson().toJson(notesList)
-        Log.d("SaveToDisk - 1", jsonString)
+//        Log.d("SaveToDisk - 1", jsonString)
         editor.putString("notesListJson", jsonString)
         editor.commit()
     }

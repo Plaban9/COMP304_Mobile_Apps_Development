@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -24,12 +25,14 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.plabanbiswas_comp304_003_lab_1.ui.theme.PlabanBiswas_COMP304_003_Lab_1Theme
@@ -128,7 +131,23 @@ class EditNoteActivity : ComponentActivity()
     @Composable
     fun SaveButton()
     {
-        Button(shape = MaterialTheme.shapes.small, modifier = Modifier.fillMaxWidth(), onClick = { SaveNote() }) {
+        val shouldShowDialog = remember { mutableStateOf(false) } // 1
+
+        if (shouldShowDialog.value)
+        {
+            MyAlertDialog(shouldShowDialog = shouldShowDialog, message = "Title cannot be empty!", buttonText = "OK")
+        }
+
+        Button(shape = MaterialTheme.shapes.small, modifier = Modifier.fillMaxWidth(), onClick = {
+            if (title.isNullOrBlank() || title.isNullOrEmpty())
+            {
+                shouldShowDialog.value = true
+            }
+            else
+            {
+                SaveNote()
+            }
+        }) {
             Icon(Icons.Default.CheckCircle, contentDescription = "Save Note")
         }
     }
@@ -142,6 +161,34 @@ class EditNoteActivity : ComponentActivity()
         intent.putExtra("edited_content", content)
         intent.putExtra("edited_timestamp", System.currentTimeMillis())
         startActivity(intent)
+    }
+
+    @Composable
+    fun MyAlertDialog(shouldShowDialog: MutableState<Boolean>, message: String, buttonText: String)
+    {
+        if (shouldShowDialog.value)
+        { // 2
+            AlertDialog( // 3
+                    onDismissRequest = { // 4
+                        shouldShowDialog.value = false
+                    },
+                    // 5
+                    title = { Text(text = "Error!") },
+                    text = { Text(text = message) },
+                    confirmButton = { // 6
+                        Button(
+                                onClick = {
+                                    shouldShowDialog.value = false
+                                }
+                        ) {
+                            Text(
+                                    text = buttonText,
+                                    color = Color.White
+                            )
+                        }
+                    }
+            )
+        }
     }
 }
 

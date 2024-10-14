@@ -1,4 +1,4 @@
-package com.example.plabanbiswas_comp304_003_lab_2.ui.theme
+package com.example.plabanbiswas_comp304_003_lab_2.view.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
@@ -9,7 +9,3 @@ val Pink80 = Color(0xFFEFB8C8)
 val Purple40 = Color(0xFF6650a4)
 val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
-
-var TaskStatus = Color(0xFFFFFFFF)
-val TaskCompleted = Color(0xFF88e788)
-val TaskPending = Color(0xFFffcdd2)

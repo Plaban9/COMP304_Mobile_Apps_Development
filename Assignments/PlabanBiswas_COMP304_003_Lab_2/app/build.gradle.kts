@@ -72,7 +72,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     // ADDED
-    implementation("io.insert-koin:koin-compose-viewmodel:4.0.0")
-    implementation("com.google.code.gson:gson:2.8.8")
+    implementation(libs.koin.compose.viewmodel)
+    implementation(libs.gson)
 
 }

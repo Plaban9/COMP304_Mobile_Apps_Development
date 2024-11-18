@@ -1,0 +1,28 @@
+companion object
+    {
+//        val viewModel: WeatherDataViewModel by viewModels()
+        var weatherDataList = mutableStateListOf<WeatherData>()
+        var shouldQuery = true
+    }
+
+///----------------------------------------------------
+
+ // viewModel.fetchCityDBList()
+
+    val roomCityDataList by viewModel.cityDBList.observeAsState()
+
+//    var weatherDataList = mutableListOf<WeatherData>()
+
+    if (roomCityDataList == null)
+    {
+        Text(text = "Loading...")
+    }
+    else
+    {
+        roomCityDataList!!.forEachIndexed { index, data ->
+            viewModel.fetchCityWeatherData(data.name)
+            val weatherData = viewModel.weatherData.observeAsState()
+            if (weatherData.value != null && !weatherDataList.contains(weatherData.value))
+                weatherDataList.add(weatherData.value!!)
+        }
+    }
